@@ -70,7 +70,7 @@ export default class Cannon {
     }
 
     shoot() {
-        const bullet = new Bullet(this.x, this.y, this.ang);
+        const bullet = new Bullet(this.level, this.x, this.y, this.ang);
         dataBus.addActor(bullet);
     }
   

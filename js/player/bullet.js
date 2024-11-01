@@ -2,13 +2,14 @@ import DataBus from "../dataBus.js";
 const dataBus = new DataBus();
 
 export default class Bullet {
-    constructor(x, y, angle) {
+    constructor(cannonLevel, x, y, angle) {
         this.x = x;
         this.y = y;
         this.speed = 10; // 炮弹速度
         this.angle = angle;
         this.direction = this.angle - Math.PI / 2; // 添加方向属性
-        this.image = dataBus.resources['bullet1.png']; // 炮弹图片资源
+        this.level = cannonLevel;
+        this.image = dataBus.resources[`bullet${this.level}.png`]; // 根据等级加载子弹图片
         this.width = this.image.img.naturalWidth;
         this.height = this.image.img.naturalHeight;
         this.ctx = dataBus.ctx;
