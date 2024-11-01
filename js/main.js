@@ -35,6 +35,10 @@ class Main {
     }
     bindEvent() {
         window.addEventListener('mousemove', this.cannon.bindMove.bind(this.cannon))
+        window.addEventListener('click', () => {
+            if(this.cannon.playAni) return;
+            this.cannon.playAni = true;
+        })
     }
     loop(currentTime) {
         this.aniId  = requestAnimationFrame(() => {
@@ -53,6 +57,7 @@ class Main {
     }
     update(){
         dataBus.ctx.clearRect(0, 0, dataBus.canvas.width, dataBus.canvas.height);
+        dataBus.actors = dataBus.actors.filter(actor => actor.isAlive !== false);
         dataBus.actors.forEach(actor => {
             actor.update();
             actor.render();
