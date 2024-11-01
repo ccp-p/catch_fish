@@ -9,12 +9,17 @@ export default class Button {
         this.ctx = dataBus.ctx;
         this.isAlive = true;
         this.zIndex = 3; // 设置 zIndex
+        this.isPressed = false;
         // 根据类型加载不同的图片资源
         if (type === 'add') {
-            this.image = dataBus.resources['cannon_plus.png'];
+            this.imageNormal = dataBus.resources['cannon_plus.png'];
+            this.imagePressed = dataBus.resources['cannon_plus_down.png'];
         } else if (type === 'subtract') {
-            this.image = dataBus.resources['cannon_minus.png'];
+            this.imageNormal = dataBus.resources['cannon_minus.png'];
+            this.imagePressed = dataBus.resources['cannon_minus_down.png'];
         }
+        // 设置初始图片
+        this.image = this.imageNormal;
         this.width = this.image.img.naturalWidth;
         this.height = this.image.img.naturalHeight;
         // 将按钮添加到游戏对象列表
@@ -22,6 +27,7 @@ export default class Button {
     }
 
     render() {
+        this.image = this.isPressed ? this.imagePressed : this.imageNormal;
         this.ctx.drawImage(this.image.img, this.x, this.y, this.width, this.height);
     }
 

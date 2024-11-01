@@ -39,20 +39,42 @@ class Main {
     
     }
     bindEvent() {
-        window.addEventListener('mousemove', this.cannon.bindMove.bind(this.cannon))
-        window.addEventListener('click', this.handleClick.bind(this));
+        window.addEventListener('mousemove', this.cannon.bindMove.bind(this.cannon));
+        window.addEventListener('mousedown', this.handleMouseDown.bind(this));
+        window.addEventListener('mouseup', this.handleMouseUp.bind(this));
     }
 
-    handleClick(e) {
+    handleMouseDown(e) {
         const mx = e.clientX - this.canvas.offsetLeft;
         const my = e.clientY - this.canvas.offsetTop;
 
         if (this.addButton.isClicked(mx, my)) {
-            this.cannon.levelUp();
-        } else if (this.subtractButton.isClicked(mx, my)) {
-            this.cannon.levelDown();
-        } else {
-            // 点击其他区域，处理其他事件，如发射炮弹
+            this.addButton.isPressed = true;
+        }
+        if (this.subtractButton.isClicked(mx, my)) {
+            this.subtractButton.isPressed = true;
+        }
+    }
+
+    handleMouseUp(e) {
+        const mx = e.clientX - this.canvas.offsetLeft;
+        const my = e.clientY - this.canvas.offsetTop;
+
+        if (this.addButton.isPressed) {
+            if (this.addButton.isClicked(mx, my)) {
+                this.cannon.levelUp();
+            }
+            this.addButton.isPressed = false;
+        }
+        if (this.subtractButton.isPressed) {
+            if (this.subtractButton.isClicked(mx, my)) {
+                this.cannon.levelDown();
+            }
+            this.subtractButton.isPressed = false;
+        }
+
+        // 处理其他区域的点击，例如发射炮弹
+        if (!this.addButton.isClicked(mx, my) && !this.subtractButton.isClicked(mx, my)) {
             if (this.cannon.playAni) return;
             this.cannon.playAni = true;
         }
