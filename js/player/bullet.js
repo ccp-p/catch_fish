@@ -13,6 +13,7 @@ export default class Bullet {
         this.height = this.image.img.naturalHeight;
         this.ctx = dataBus.ctx;
         this.isAlive = true; // 是否存活
+        this.zIndex = 1; // 添加 zIndex 属性
     }
 
     update() {

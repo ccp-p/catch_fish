@@ -17,6 +17,7 @@ export default class Cannon {
         this._playAni = false
         this.width = this.image.img.naturalWidth;
         this.height = this.image.img.naturalHeight;
+        this.zIndex = 2; // 添加 zIndex 属性
         // 将大炮添加到游戏对象列表
         dataBus.addActor(this);
     }

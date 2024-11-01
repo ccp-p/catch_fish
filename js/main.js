@@ -58,6 +58,8 @@ class Main {
     update(){
         dataBus.ctx.clearRect(0, 0, dataBus.canvas.width, dataBus.canvas.height);
         dataBus.actors = dataBus.actors.filter(actor => actor.isAlive !== false);
+        // 根据 zIndex 排序 actors
+        dataBus.actors.sort((a, b) => a.zIndex - b.zIndex);
         dataBus.actors.forEach(actor => {
             actor.update();
             actor.render();
