@@ -17,6 +17,8 @@ export default class ResourceLoader {
      let resourceMaps  =  await this.initJson(resourceMap)
 
         resourceMaps = this.initCannon(resourceMaps);
+        resourceMaps = this.initFish(resourceMaps);
+        resourceMaps = this.initNet(resourceMaps);  // 添加网资源
      
       resourceMaps = await this.initImg(resourceMaps);
 
@@ -26,23 +28,38 @@ export default class ResourceLoader {
       dataBus.resources = resourceMaps;
      
     }
-    initCannon(resourceMap){
-        const arr = Array.from({length: 7}, (v, i) => i + 1);
-        const cannon = arr.map(i => {
-            return  `cannon${i}.png`
-        });
-        cannon.forEach(name => {
-            resourceMap[name] = {
+
+    // 新增通用初始化方法
+    initResource(prefix, count) {
+        return Array.from({ length: count }, (_, i) => ({
+            [`${prefix}${i + 1}.png`]: {
                 img: null,
-                sourceSize: {
-                    w: 0,
-                    h: 0
-                }
+                sourceSize: { w: 0, h: 0 }
             }
-        })
-        
-       return resourceMap;
+        })).reduce((acc, curr) => ({ ...acc, ...curr }), {});
     }
+
+    initFish(resourceMap) {
+        return {
+            ...resourceMap,
+            ...this.initResource('fish', 5)
+        };
+    }
+
+    initCannon(resourceMap) {
+        return {
+            ...resourceMap,
+            ...this.initResource('cannon', 7)
+        };
+    }
+
+    initNet(resourceMap) {
+        return {
+            ...resourceMap,
+            ...this.initResource('web', 7)  // 假设有一张网的图片
+        };
+    }
+
     async initImg(resourceMap){
      const imgPathArr = Object.keys(resourceMap).map(key => (`${this.imageRoot}${key}`));
 
@@ -71,7 +88,7 @@ export default class ResourceLoader {
                 }
                 const result = {}
                 Object.keys(resourceMap).forEach(key => {
-                    if(!result[key]){
+                    if(!result[key]){ 
                         result[key] = {};
                     }
                     result[key].sourceSize = resourceMap[key].sourceSize;
