@@ -7,7 +7,10 @@ export default class Cannon {
     constructor(options) {
         // 获取大炮的图片资源
         
-        this.image = dataBus.resources['cannon1.png'];
+        this.level = 1; // 初始等级
+        this.maxLevel = 7;
+        this.minLevel = 1;
+        this.updateImage();
         this.x = 552
         this.y = 740
         this.options = options || {}
@@ -20,6 +23,26 @@ export default class Cannon {
         this.zIndex = 2; // 添加 zIndex 属性
         // 将大炮添加到游戏对象列表
         dataBus.addActor(this);
+    }
+
+    updateImage() {
+        this.image = dataBus.resources[`cannon${this.level}.png`];
+        this.width = this.image.img.naturalWidth;
+        this.height = this.image.img.naturalHeight;
+    }
+
+    levelUp() {
+        if (this.level < this.maxLevel) {
+            this.level++;
+            this.updateImage();
+        }
+    }
+
+    levelDown() {
+        if (this.level > this.minLevel) {
+            this.level--;
+            this.updateImage();
+        }
     }
 
     update() {

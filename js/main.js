@@ -3,6 +3,7 @@ const dataBus = new DataBus();
 import ResourceLoader from './base/resourceLoader.js';
 import Background from './runtime/background.js';
 import Cannon from './player/cannon.js';
+import Button from './player/button.js';
 
 let lastTime = 0;
 const fps = 30; // Desired frames per second
@@ -18,6 +19,8 @@ class Main {
         this.aniId = 0
         this.isAleadyInit = false;
         this.resources = new ResourceLoader();
+        this.addButton = null;
+        this.subtractButton = null;
         this.loop(Date.now());
 
     }
@@ -27,6 +30,8 @@ class Main {
         dataBus.reset()
         this.bg = new Background();
         this.cannon = new Cannon();
+        this.addButton = new Button('add', 50, 50);
+        this.subtractButton = new Button('subtract', 150, 50);
         this.bg.render();
         this.cannon.render();
         this.bindEvent()
@@ -35,11 +40,24 @@ class Main {
     }
     bindEvent() {
         window.addEventListener('mousemove', this.cannon.bindMove.bind(this.cannon))
-        window.addEventListener('click', () => {
-            if(this.cannon.playAni) return;
-            this.cannon.playAni = true;
-        })
+        window.addEventListener('click', this.handleClick.bind(this));
     }
+
+    handleClick(e) {
+        const mx = e.clientX - this.canvas.offsetLeft;
+        const my = e.clientY - this.canvas.offsetTop;
+
+        if (this.addButton.isClicked(mx, my)) {
+            this.cannon.levelUp();
+        } else if (this.subtractButton.isClicked(mx, my)) {
+            this.cannon.levelDown();
+        } else {
+            // 点击其他区域，处理其他事件，如发射炮弹
+            if (this.cannon.playAni) return;
+            this.cannon.playAni = true;
+        }
+    }
+
     loop(currentTime) {
         this.aniId  = requestAnimationFrame(() => {
             this.loop(Date.now());
