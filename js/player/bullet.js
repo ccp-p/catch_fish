@@ -1,4 +1,5 @@
 import DataBus from "../dataBus.js";
+import Net from './net.js';
 const dataBus = new DataBus();
 
 export default class Bullet {
@@ -36,5 +37,16 @@ export default class Bullet {
         const dy = -this.height / 2;
         this.ctx.drawImage(this.image.img, dx, dy, this.width, this.height);
         this.ctx.restore();
+    }
+
+    checkCollision(fish) {
+        if (this.detectCollision(fish)) {
+            // 生成网的效果
+            dataBus.addActor(new Net(fish.x, fish.y, this.type));
+            // 让鱼进入死亡状态
+            fish.die();
+            // 移除子弹
+            this.isAlive = false;
+        }
     }
 }

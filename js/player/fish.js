@@ -14,6 +14,9 @@ export default class Fish {
         this.ctx = dataBus.ctx;
         this.isAlive = true;
         this.zIndex = 1;
+        this.frameIndex = 0;
+        this.frameCount = this.image.moveFrame + this.image.captureFrame; // 总帧数
+        this.isDying = false;  // 是否正在播放死亡动画
         
         // 随机生成鱼的初始位置(从屏幕右侧游出)
         this.x = dataBus.canvas.width + this.width;
@@ -23,35 +26,29 @@ export default class Fish {
         this.speed = 2 + Math.random() * 2;  // 随机速度
         this.angle = Math.PI + Math.random() * 0.3 - 0.15;  // 基本向左，有小范围随机角度
         
-        // 动画相关
-        this.frameIndex = 0;  // 当前帧索引
-        this.frameCount = 8;  // 将总帧数从4增加到8
-        this.animationSpeed = 0.1;  // 控制动画速度
-        this.frameTimer = 0;
         
         // 将鱼添加到游戏对象列表
         dataBus.addActor(this);
     }
 
     update() {
-        // 更新位置
-        this.x += Math.cos(this.angle) * this.speed;
-        this.y += Math.sin(this.angle) * this.speed;
-        
-        // 更新动画帧
-        this.frameTimer += this.animationSpeed;
-        if (this.frameTimer >= 1) {
-            this.frameTimer = 0;
-            this.frameIndex = (this.frameIndex + 1) % this.frameCount;
-        }
-        
-        if (!this.isAlive) {
-            this.frameIndex = 4 + Math.floor(this.frameTimer); // 使用死亡动画帧
-        }
-        
-        // 检查是否超出屏幕
-        if (this.x < -this.width) {
-            this.isAlive = false;
+        if (this.isDying) {
+            // 死亡动画
+            if (this.frameIndex < this.image.captureFrame - 1) {
+                this.frameIndex++;
+            } else {
+                this.isAlive = false;
+            }
+        } else {
+            // 移动动画
+            this.frameIndex = (this.frameIndex + 1) % this.image.moveFrame;
+            // 更新位置
+            this.x += Math.cos(this.angle) * this.speed;
+            this.y += Math.sin(this.angle) * this.speed;
+            // 检查是否超出屏幕
+            if (this.x < -this.width || this.y < -this.height || this.y > dataBus.canvas.height + this.height) {
+                this.isAlive = false;
+            }
         }
     }
 
@@ -64,9 +61,14 @@ export default class Fish {
         
         // 绘制当前帧
         const sw = this.width;
-        const sh = this.height / 8; // 每条鱼8帧垂直排列
+        const sh = this.height / this.frameCount; // 每条鱼8帧垂直排列
         const sx = 0;
-        const sy = this.isAlive ? this.frameIndex * sh : 4 * sh + this.frameIndex * sh; // 根据状态选择行
+        let sy;
+        if (this.isDying) {
+            sy = (this.image.moveFrame + this.frameIndex) * sh;
+        } else {
+            sy = this.frameIndex * sh;
+        }
         this.ctx.drawImage(
             this.image.img,
             sx, sy, sw, sh,
@@ -86,7 +88,11 @@ export default class Fish {
     }
     
     die() {
-        this.isAlive = false;
-        // 这里可以添加死亡动画或其他效果
+        if (!this.isDying) {
+            this.isDying = true;
+            this.frameIndex = 0;
+            // 生成金币
+            dataBus.addActor(new Coin(this.x, this.y));
+        }
     }
 }

@@ -2,23 +2,31 @@ import DataBus from '../dataBus.js';
 const dataBus = new DataBus();
 
 export default class Net {
-    constructor(x, y) {
-        this.image = dataBus.resources['web1.png'];  // 假设网的图片名为 net1.png
-        this.x = x;
-        this.y = y;
+    constructor(x, y, type) {
+        this.image = dataBus.resources[`web${type}.png`];
         this.width = this.image.img.naturalWidth;
         this.height = this.image.img.naturalHeight;
+        this.x = x;
+        this.y = y;
         this.ctx = dataBus.ctx;
         this.isAlive = true;
-        this.zIndex = 2;  // 确定渲染顺序
+        this.zIndex = 1;
+        this.lifeTime = 30; // 网的存在时间帧数
     }
 
     update() {
-        // 可以添加网的动画或移动逻辑
+        this.lifeTime--;
+        if (this.lifeTime <= 0) {
+            this.isAlive = false;
+        }
     }
 
     render() {
-        this.ctx.drawImage(this.image.img, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
+        this.ctx.drawImage(
+            this.image.img,
+            0, 0, this.width, this.height,
+            this.x - this.width / 2, this.y - this.height / 2, this.width, this.height
+        );
     }
 
     checkCollision(fish) {

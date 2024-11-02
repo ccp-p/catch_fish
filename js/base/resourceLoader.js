@@ -19,6 +19,7 @@ export default class ResourceLoader {
         resourceMaps = this.initCannon(resourceMaps);
         resourceMaps = this.initFish(resourceMaps);
         resourceMaps = this.initNet(resourceMaps);  // 添加网资源
+        resourceMaps = this.initCoin(resourceMaps);  // 新增加载金币资源
      
       resourceMaps = await this.initImg(resourceMaps);
 
@@ -40,10 +41,38 @@ export default class ResourceLoader {
     }
 
     initFish(resourceMap) {
-        return {
+        // 1-5 为鱼的资源
+        const fishDatas = [
+            // 1~5
+            { moveFrame: 4, captureFrame: 4 },
+            { moveFrame: 4, captureFrame: 4 },
+            { moveFrame: 4, captureFrame: 4 },
+            { moveFrame: 4, captureFrame: 4 },
+            { moveFrame: 4, captureFrame: 4 },
+            // 6
+            { moveFrame: 8, captureFrame: 4 },
+            // 7
+            { moveFrame: 6, captureFrame: 4 },
+            // 8
+            { moveFrame: 12, captureFrame: 0 ,undead: true},
+            { moveFrame: 8, captureFrame: 4 },
+            // 10
+            { moveFrame: 6, captureFrame: 4 ,undead: true},
+        ];
+        // 6-10 为炮弹的资源
+        const result = {
             ...resourceMap,
-            ...this.initResource('fish', 5)
-        };
+            ...fishDatas.map((data, index) => {
+                return {
+                    [`fish${index + 1}.png`]: {
+                        img: null,
+                        sourceSize: { w: 0, h: 0 },
+                        ...data
+                    }
+                }
+            }).reduce((acc, curr) => ({ ...acc, ...curr }), {})
+        }
+        return result;
     }
 
     initCannon(resourceMap) {
@@ -58,6 +87,25 @@ export default class ResourceLoader {
             ...resourceMap,
             ...this.initResource('web', 7)  // 假设有一张网的图片
         };
+        resourceMap['web.png'] = {
+            img: null,
+            sourceSize: { w: 0, h: 0 },
+            moveFrame: 1
+        };
+        return resourceMap;
+    }
+
+    initCoin(resourceMap) {
+        const arr=  ['1','2']
+        arr.map((item, index) => {
+            resourceMap[`coinAni${item}.png`] = {
+                img: null,
+                sourceSize: { w: 0, h: 0 },
+                moveFrame: 10  // 假设金币有 10 帧动画
+            }
+        })
+     
+        return resourceMap;
     }
 
     async initImg(resourceMap){
