@@ -11,11 +11,12 @@ export default class Coin {
         this.width = this.image.img.naturalWidth;
         this.height = this.image.img.naturalHeight;
         this.ctx = dataBus.ctx;
+        this.frameIndex = 0; // 帧索引
         this.isAlive = true;
         this.zIndex = 2;
         this.speed = 5;
     }
-
+   
     update() {
         // 计算移动方向
         const dx = this.destX - this.x;
@@ -27,14 +28,18 @@ export default class Coin {
             this.x += (dx / distance) * this.speed;
             this.y += (dy / distance) * this.speed;
         }
+        // 更新帧索引
+        this.frameIndex = (this.frameIndex + 1) % 10;
     }
 
     render() {
-        
-        this.ctx.drawImage(
-            this.image.img,
-            this.x - this.width / 2, this.y - this.height / 2,
-            this.width, this.height
-        );
+        //  帧动画 从上到下10个小金币所以一个金币的高度是整个图片的1/10
+       const sh = this.height / 10
+       const sy = sh * this.frameIndex;
+         this.ctx.drawImage(
+              this.image.img,
+              0, sy, this.width, sh,
+              this.x, this.y, this.width, sh
+         );
     }
 }
