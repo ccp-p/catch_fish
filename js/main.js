@@ -1,6 +1,7 @@
 import DataBus from './dataBus.js';
 import Fish from './player/fish.js';
 import Net from './player/net.js';
+import Score from './player/score.js';
 
 const dataBus = new DataBus();
 import ResourceLoader from './base/resourceLoader.js';
@@ -39,11 +40,13 @@ class Main {
         dataBus.reset()
         this.bg = new Background();
         this.cannon = new Cannon();
+        this.score = new Score(); // 添加得分管理
         this.addButton = new Button('add', 50, 50);
         this.subtractButton = new Button('subtract', 150, 50);
         this.bg.render();
         this.cannon.render();
         this.bindEvent()
+        dataBus.score = this.score;
 
     
     }
@@ -91,10 +94,8 @@ class Main {
     }
 
     fireCannon(mx, my) {
-        const net = new Net(mx, my);
+        const net = new Net(mx, my, this.cannon.level);
         dataBus.addActor(net);
-        // 调用 Net 类中的 captureFish 方法
-        // 示例：net.captureFish(targetFish);
     }
 
     loop(currentTime) {
@@ -140,12 +141,13 @@ class Main {
     }
 
     checkCollisions() {
-        this.nets.forEach(net => {
-            dataBus.actors.forEach(actor => {
-                if (actor instanceof Fish && actor.isAlive) {
-                    if (net.checkCollision(actor)) {
-                        net.captureFish(actor);
-                    }
+        const nets = dataBus.actors.filter(actor => actor instanceof Net && actor.isAlive);
+        const fishes = dataBus.actors.filter(actor => actor instanceof Fish && actor.isAlive);
+        nets.forEach(net => {
+            fishes.forEach(fish => {
+                if (net.checkCollision(fish)) {
+                    net.captureFish(fish);
+                    this.score.addScore(fish.score); // 捕获鱼后增加得分
                 }
             });
         });

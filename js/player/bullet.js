@@ -1,6 +1,7 @@
 import DataBus from "../dataBus.js";
 import Net from './net.js';
 const dataBus = new DataBus();
+import Fish from './fish.js';
 
 export default class Bullet {
     constructor(cannonLevel, x, y, angle) {
@@ -27,6 +28,23 @@ export default class Bullet {
         if (this.x < 0 || this.x > dataBus.canvas.width || this.y < 0 || this.y > dataBus.canvas.height) {
             this.isAlive = false;
         }
+
+        // 添加碰撞检测
+        const fishes = dataBus.actors.filter(actor => actor instanceof Fish && actor.isAlive);
+        fishes.forEach(fish => {
+            if (this.checkCollision(fish)) {
+                // 生成网的效果
+                dataBus.addActor(new Net(this.x, this.y, this.level));
+                // 生成金币效果
+                dataBus.addActor(new Coin(fish.x, fish.y));
+                // 让鱼进入死亡状态
+                fish.die();
+                // 增加分数
+                dataBus.score.addScore(fish.score);
+                // 移除子弹
+                this.isAlive = false;
+            }
+        });
     }
 
     render() {
@@ -38,11 +56,16 @@ export default class Bullet {
         this.ctx.drawImage(this.image.img, dx, dy, this.width, this.height);
         this.ctx.restore();
     }
+    detectCollision(fish) {
+        const dx = Math.abs(this.x - fish.x);
+        const dy = Math.abs(this.y - fish.y);
+        return dx < (this.width + fish.width) / 2 && dy < (this.height + fish.height) / 2;
+    }
 
     checkCollision(fish) {
         if (this.detectCollision(fish)) {
             // 生成网的效果
-            dataBus.addActor(new Net(fish.x, fish.y, this.type));
+            dataBus.addActor(new Net(fish.x, fish.y, this.level));
             // 让鱼进入死亡状态
             fish.die();
             // 移除子弹

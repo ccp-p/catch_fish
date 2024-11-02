@@ -1,6 +1,5 @@
 import DataBus from '../dataBus.js';
 const dataBus = new DataBus();
-
 export default class Net {
     constructor(x, y, type) {
         this.image = dataBus.resources[`web${type}.png`];

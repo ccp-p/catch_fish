@@ -1,6 +1,6 @@
 import DataBus from '../dataBus.js';
 const dataBus = new DataBus();
-
+import Coin from './coin.js';
 export default class Fish {
     constructor(type) {
         // 鱼的类型(1-5对应不同鱼的大小)
@@ -17,6 +17,7 @@ export default class Fish {
         this.frameIndex = 0;
         this.frameCount = this.image.moveFrame + this.image.captureFrame; // 总帧数
         this.isDying = false;  // 是否正在播放死亡动画
+        this.score = this.type * 10; // 根据鱼的类型设置分数
         
         // 随机生成鱼的初始位置(从屏幕右侧游出)
         this.x = dataBus.canvas.width + this.width;
@@ -91,8 +92,11 @@ export default class Fish {
         if (!this.isDying) {
             this.isDying = true;
             this.frameIndex = 0;
+            this.speed = 0; // 停止移动
             // 生成金币
             dataBus.addActor(new Coin(this.x, this.y));
         }
+        this.isAlive = false;
+        // 添加死亡动画或效果
     }
 }

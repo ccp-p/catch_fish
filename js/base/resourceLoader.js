@@ -132,7 +132,11 @@ export default class ResourceLoader {
                 resourceMap = {
                     ...bottomJson.frames,
                     ...bulletJson.frames,
-                    ...webJson.frames
+                    ...webJson.frames,
+                    'number_black.png': {
+                        img: null,
+                        sourceSize: { w: 0, h: 0 }
+                    }
                 }
                 const result = {}
                 Object.keys(resourceMap).forEach(key => {
