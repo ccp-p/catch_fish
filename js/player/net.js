@@ -3,6 +3,7 @@ const dataBus = new DataBus();
 export default class Net {
     constructor(x, y, type) {
         this.image = dataBus.resources[`web${type}.png`];
+        debugger
         this.width = this.image.img.naturalWidth;
         this.height = this.image.img.naturalHeight;
         this.x = x;

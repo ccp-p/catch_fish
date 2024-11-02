@@ -89,14 +89,10 @@ class Main {
         if (!this.addButton.isClicked(mx, my) && !this.subtractButton.isClicked(mx, my)) {
             if (this.cannon.playAni) return;
             this.cannon.playAni = true;
-            this.fireCannon(mx, my);  // 添加发射炮弹的方法
         }
     }
 
-    fireCannon(mx, my) {
-        const net = new Net(mx, my, this.cannon.level);
-        dataBus.addActor(net);
-    }
+  
 
     loop(currentTime) {
         this.aniId = requestAnimationFrame(() => {
