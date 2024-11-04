@@ -36,6 +36,11 @@ export default class Bullet {
             const isCollision = this.detectCollision(fish);
             const isAlive = this.isAlive;
             if (isCollision && isAlive) {
+                const isHit = Math.random() < (this.level / (fish.type * 2));
+                if(!isHit) {
+                this.isAlive = false;
+                    return;
+                }
                 // 生成网的效果
                 dataBus.addActor(new Net(this.x, this.y, this.level));
                 // 生成金币效果
