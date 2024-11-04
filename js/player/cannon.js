@@ -70,19 +70,30 @@ export default class Cannon {
     }
 
     shoot() {
-        const bullet = new Bullet(this.level, this.x, this.y, this.ang);
-        const minusPoint = this.level * this.level;
-        dataBus.addActor(bullet);
+        this.addBullet();
+     
+    }
+    addBullet(){
+        // from -10 to 10 iter
+        for (let i = -10; i <= 10; i++) {
+            const bullet = new Bullet(this.level, this.x, this.y, this.ang + i * Math.PI / 180);
+            dataBus.addActor(bullet);
+            const minusPoint = this.level * this.level;
 
-        if (dataBus.score.score > minusPoint) {
-            dataBus.score.addScore(-minusPoint);
+            if (dataBus.score.score > minusPoint) {
+                dataBus.score.addScore(-minusPoint);
+            }
         }
+        // const bullet = new Bullet(this.level, this.x, this.y, this.ang);
+        // dataBus.addActor(bullet);
+
     }
   
     bindMove(e){
             this.options.mx = e.clientX- dataBus.canvas.offsetLeft;
             this.options.my = e.clientY - dataBus.canvas.offsetTop;
     }
+
 
     render() {
         const sw = this.width;

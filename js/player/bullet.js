@@ -8,7 +8,7 @@ export default class Bullet {
     constructor(cannonLevel, x, y, angle) {
         this.x = x;
         this.y = y;
-        this.speed = 30; // 炮弹速度
+        this.speed = 35; // 炮弹速度
         this.angle = angle;
         this.direction = this.angle - Math.PI / 2; // 添加方向属性
         this.level = cannonLevel;
@@ -35,9 +35,10 @@ export default class Bullet {
         fishes.forEach(fish => {
             const isCollision = this.detectCollision(fish);
             const isAlive = this.isAlive;
-            if (isCollision && isAlive) {
+            const isFishAlive = fish.isAlive;
+            if (isCollision && isAlive ) {
                 const isHit = Math.random() < (this.level / (fish.type * 2));
-                if(!isHit) {
+                if(!isHit || !isFishAlive) {
                 this.isAlive = false;
                     return;
                 }

@@ -31,7 +31,7 @@ class Main {
         // 鱼群管理相关属性
         this.lastFishTime = Date.now()
         this.fishGenerateInterval = 100  // 每秒生成一条鱼
-        this.maxFishCount = 15  // 场景中最多同时存在的鱼数量
+        this.maxFishCount = 20  // 场景中最多同时存在的鱼数量
 
     }
     init() {
