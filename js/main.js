@@ -41,14 +41,27 @@ class Main {
         this.bg = new Background();
         this.cannon = new Cannon();
         this.score = new Score(); // 添加得分管理
-        this.addButton = new Button('add', 50, 50);
-        this.subtractButton = new Button('subtract', 150, 50);
+        this.renderButton();
         this.bg.render();
         this.cannon.render();
         this.bindEvent()
         dataBus.score = this.score;
 
     
+    }
+    renderButton(){
+        // center
+        const sX = dataBus.canvas.width / 2 - 26; 
+        //  bottom 
+        const sY =  dataBus.canvas.height - 37;
+
+        const aX = dataBus.canvas.width/2+  66;
+
+        const aY = dataBus.canvas.height - 37;
+
+        this.addButton = new Button('add', aX, aY);
+
+        this.subtractButton = new Button('subtract', sX, sY);
     }
     bindEvent() {
         window.addEventListener('mousemove', this.cannon.bindMove.bind(this.cannon));

@@ -49,7 +49,6 @@ export default class Bullet {
     addCoin(fish) {
         // fishType 1-5 对应 1-5 号鱼
         let coinCount = fish.type * fish.type;
-        console.log('coinCount',coinCount);
      
         const timer = setInterval(() => {
             if(coinCount % 10 !=0){

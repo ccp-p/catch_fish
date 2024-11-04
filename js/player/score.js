@@ -36,7 +36,6 @@ export default class Score {
         this.ctx.restore();
 
         const scoreStr = this.getScore()
-        console.log('scoreStr',scoreStr);
         
         let offsetX = this.x;
         const x = 150
