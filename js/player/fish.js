@@ -14,7 +14,7 @@ export default class Fish {
         this.fishHeight = this.height / this.image.moveFrame; // 每条鱼8帧垂直排列
         this.ctx = dataBus.ctx;
         this.isAlive = true;
-        this.zIndex = 1;
+        this.zIndex = 3;
         this.frameIndex = 0;
         this.frameCount = this.image.moveFrame + this.image.captureFrame; // 总帧数
         this.isDying = false;  // 是否正在播放死亡动画

@@ -11,21 +11,34 @@ export default class Net {
         this.isAlive = true;
         this.zIndex = 1;
         this.lifeTime = 30; // 网的存在时间帧数
+        this.scale  = 1;
+        dataBus.addActor(this);
     }
 
     update() {
         this.lifeTime--;
+        this.scale += 0.02;
+
         if (this.lifeTime <= 0) {
             this.isAlive = false;
         }
+        // 缩放效果
+
     }
 
     render() {
+        this.ctx.save();
+        this.ctx.translate(this.x, this.y);
+        this.ctx.scale(this.scale, this.scale);
+        this.ctx.translate(-this.x, -this.y);
+
         this.ctx.drawImage(
             this.image.img,
             0, 0, this.width, this.height,
             this.x - this.width / 2, this.y - this.height / 2, this.width, this.height
         );
+
+        this.ctx.restore();
     }
 
     checkCollision(fish) {
@@ -36,7 +49,7 @@ export default class Net {
 
     captureFish(fish) {
         // 捕捉鱼的逻辑
-        this.isAlive = false;
+        // this.isAlive = false;
         // 添加捕捉动画或效果
     }
 }

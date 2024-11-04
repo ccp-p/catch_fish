@@ -161,12 +161,7 @@ class Main {
         // 生成新的鱼
         this.generateFish();
         
-        // 更新网
-        this.nets = this.nets.filter(net => net.isAlive);
-        this.nets.forEach(net => {
-            net.update();
-            net.render();
-        });
+        
     }
 
     checkCollisions() {

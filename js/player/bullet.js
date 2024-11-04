@@ -34,8 +34,8 @@ export default class Bullet {
         const fishes = dataBus.actors.filter(actor => actor instanceof Fish && actor.isAlive);
         fishes.forEach(fish => {
             const isCollision = this.detectCollision(fish);
-            
-            if (isCollision) {
+            const isAlive = this.isAlive;
+            if (isCollision && isAlive) {
                 // 生成网的效果
                 dataBus.addActor(new Net(this.x, this.y, this.level));
                 // 生成金币效果
