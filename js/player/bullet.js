@@ -8,7 +8,7 @@ export default class Bullet {
     constructor(cannonLevel, x, y, angle) {
         this.x = x;
         this.y = y;
-        this.speed = 10; // 炮弹速度
+        this.speed = 30; // 炮弹速度
         this.angle = angle;
         this.direction = this.angle - Math.PI / 2; // 添加方向属性
         this.level = cannonLevel;

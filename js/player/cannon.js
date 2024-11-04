@@ -71,7 +71,12 @@ export default class Cannon {
 
     shoot() {
         const bullet = new Bullet(this.level, this.x, this.y, this.ang);
+        const minusPoint = this.level * this.level;
         dataBus.addActor(bullet);
+
+        if (dataBus.score.score > minusPoint) {
+            dataBus.score.addScore(-minusPoint);
+        }
     }
   
     bindMove(e){
