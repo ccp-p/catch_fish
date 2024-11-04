@@ -2,12 +2,13 @@ import DataBus from '../dataBus.js';
 const dataBus = new DataBus();
 
 export default class Coin {
-    constructor(x, y) {
+    constructor(type,x, y) {
         this.x = x;
         this.y = y;
         this.destX = 200; // 左下角的 x 坐标
+        this.type = type;
         this.destY = dataBus.canvas.height - 60; // 左下角的 y 坐标
-        this.image = dataBus.resources['coinAni1.png'];
+        this.image = dataBus.resources[`coinAni${type}.png`];
         this.width = this.image.img.naturalWidth;
         this.height = this.image.img.naturalHeight;
         this.ctx = dataBus.ctx;

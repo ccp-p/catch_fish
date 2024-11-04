@@ -37,7 +37,7 @@ export default class Bullet {
                 // 生成网的效果
                 dataBus.addActor(new Net(this.x, this.y, this.level));
                 // 生成金币效果
-                dataBus.addActor(new Coin(fish.x, fish.y));
+                this.addCoin(fish);
                 // 让鱼进入死亡状态
                 fish.die();
                 // 增加分数
@@ -47,7 +47,26 @@ export default class Bullet {
             }
         });
     }
-
+    addCoin(fish) {
+        // fishType 1-5 对应 1-5 号鱼
+        let coinCount = fish.type * fish.type;
+        console.log('coinCount',coinCount);
+     
+        const timer = setInterval(() => {
+            if(coinCount % 10 !=0){
+                dataBus.addActor(new Coin(1,fish.x, fish.y));
+                coinCount--;
+            }else{
+                dataBus.addActor(new Coin(2,fish.x, fish.y));
+                coinCount -=10
+            }
+            if(coinCount === 0){
+                clearInterval(timer)
+            }
+            
+        },150)
+        
+    }
     render() {
 
         this.ctx.save();

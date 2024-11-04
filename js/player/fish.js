@@ -94,7 +94,6 @@ export default class Fish {
             this.frameIndex = 0;
             this.speed = 0; // 停止移动
             // 生成金币
-            dataBus.addActor(new Coin(this.x, this.y));
         }
         this.isAlive = false;
         // 添加死亡动画或效果
