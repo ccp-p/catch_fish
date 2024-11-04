@@ -20,6 +20,7 @@ export default class Fish {
         this.isDying = false;  // 是否正在播放死亡动画
         this.score = this.type * 10; // 根据鱼的类型设置分数
         this.from = Math.random() < 0.5 ? 'left' : 'right'; // 随机生成鱼的游出方向
+        this.scale = this.from === 'left' ? [1,1] : [1,-1]; // 根据游出方向设置缩放
         if (this.from === 'left') {
             this.x = -this.width;
             this.angle = Math.random() * 0.3 - 0.15; // 基本向右，有小范围随机角度
@@ -64,18 +65,14 @@ export default class Fish {
         // 移动到鱼的位置并旋转
         this.ctx.translate(this.x, this.y);
         this.ctx.rotate(this.angle);
+        this.ctx.scale(this.scale[0], this.scale[1]);
         
         // 绘制当前帧
         const sw = this.width;
         const sh = this.height / this.frameCount; // 每条鱼8帧垂直排列
         const sx = 0;
 
-        let dx,dy = 100
-        if(this.from === 'left'){
-            dx = 20 
-        }else{
-            dx = dataBus.canvas.width 
-        }
+     
 
         let sy;
         if (this.isDying) {

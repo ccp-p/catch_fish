@@ -185,7 +185,6 @@ class Main {
     generateFish() {
         const now = Date.now();
             const currentFishCount = dataBus.actors.filter(actor => actor instanceof Fish).length;
-            console.log('currentFishCount', currentFishCount);
             
             if (currentFishCount < this.maxFishCount) {
                 const random = Math.random();
