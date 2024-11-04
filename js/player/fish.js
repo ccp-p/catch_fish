@@ -70,7 +70,7 @@ export default class Fish {
         const sh = this.height / this.frameCount; // 每条鱼8帧垂直排列
         const sx = 0;
 
-        let dx,dy = 10
+        let dx,dy = 100
         if(this.from === 'left'){
             dx = 20 
         }else{
@@ -131,6 +131,7 @@ export default class Fish {
     die() {
         if (!this.isDying) {
             this.isDying = true;
+            debugger
             console.log('die',this.type);
             
             this.frameIndex = 0;
@@ -138,7 +139,6 @@ export default class Fish {
             // 生成金币
             this.addCoin(this)
         }
-        this.isAlive = false;
         // 添加死亡动画或效果
     }
 }
