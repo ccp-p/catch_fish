@@ -30,7 +30,7 @@ class Main {
         this.totalProbability = 0;
         // 鱼群管理相关属性
         this.lastFishTime = Date.now()
-        this.fishGenerateInterval = 1000  // 每秒生成一条鱼
+        this.fishGenerateInterval = 100  // 每秒生成一条鱼
         this.maxFishCount = 15  // 场景中最多同时存在的鱼数量
 
     }
@@ -61,7 +61,9 @@ class Main {
             { type: '7', probability: 0.1 },
             { type: '8', probability: 0.05 },
             { type: '9', probability: 0.1 },
-            { type: '10', probability: 0.05 }
+            { type: '10', probability: 0.05 },
+            { type: '11', probability: 0.05 },
+            { type: '12', probability: 0.05 },
         ];
         this.totalProbability = fishTypes.reduce((sum, fish) => sum + fish.probability, 0);
 
@@ -182,8 +184,9 @@ class Main {
 
     generateFish() {
         const now = Date.now();
-        if (now - this.lastFishTime >= this.fishGenerateInterval) {
             const currentFishCount = dataBus.actors.filter(actor => actor instanceof Fish).length;
+            console.log('currentFishCount', currentFishCount);
+            
             if (currentFishCount < this.maxFishCount) {
                 const random = Math.random();
              
@@ -206,7 +209,6 @@ class Main {
             }
 
             this.lastFishTime = now;
-        }
     }
 }
 new Main();

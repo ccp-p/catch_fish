@@ -58,6 +58,10 @@ export default class ResourceLoader {
             { moveFrame: 8, captureFrame: 4 },
             // 10
             { moveFrame: 6, captureFrame: 4 ,undead: true},
+            // 11
+            { moveFrame: 12, captureFrame: 0 ,undead: true},
+            // 12
+            { moveFrame: 12, captureFrame: 0 ,undead: true},
         ];
         // 6-10 为炮弹的资源
         const result = {

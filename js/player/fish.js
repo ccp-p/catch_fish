@@ -27,7 +27,7 @@ export default class Fish {
             this.x = dataBus.canvas.width + this.width;
             this.angle = Math.PI + Math.random() * 0.3 - 0.15; // 基本向左，有小范围随机角度
         }
-        this.y = Math.random() * (dataBus.canvas.height - this.height);
+        this.y = Math.random() * (dataBus.canvas.height - 400) + 200;
         
         // 移动相关属性
         this.speed = 2 + Math.random() * 2;  // 随机速度
@@ -88,7 +88,7 @@ export default class Fish {
         this.ctx.strokeStyle = 'green';
         this.ctx.lineWidth = 5;
         // 围绕中心点绘制
-        this.ctx.strokeRect(-this.width / 2, -this.fishHeight / 2, this.width, this.fishHeight);
+        // this.ctx.strokeRect(-this.width / 2, -this.fishHeight / 2, this.width, this.fishHeight);
 
         this.ctx.drawImage(
             this.image.img,
@@ -131,7 +131,6 @@ export default class Fish {
     die() {
         if (!this.isDying) {
             this.isDying = true;
-            debugger
             console.log('die',this.type);
             
             this.frameIndex = 0;

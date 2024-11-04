@@ -34,7 +34,6 @@ export default class Bullet {
         const fishes = dataBus.actors.filter(actor => actor instanceof Fish && actor.isAlive);
         fishes.forEach(fish => {
             const isCollision = this.detectCollision(fish);
-            console.log('isCollision',isCollision);
             
             if (isCollision) {
                 // 生成网的效果
@@ -59,10 +58,10 @@ export default class Bullet {
         const dy = -this.height / 2;
         this.ctx.drawImage(this.image.img, dx, dy, this.width, this.height);
         // 绘制绿色的碰撞检测边框
-        this.ctx.strokeStyle = 'green';
-        this.ctx.lineWidth = 20;
+        // this.ctx.strokeStyle = 'green';
+        // this.ctx.lineWidth = 20;
         // 是绘制线框矩形，不是填满
-        this.ctx.strokeRect(dx, dy, this.width, this.height);
+        // this.ctx.strokeRect(dx, dy, this.width, this.height);
 
         this.ctx.restore();
 
