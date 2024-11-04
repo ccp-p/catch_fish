@@ -16,6 +16,11 @@ export default class Coin {
         this.isAlive = true;
         this.zIndex = 1;
         this.speed = 20;
+        this.addScore()
+    }
+    addScore(){
+         const score = this.type === 1 ? 1 : 10;
+         dataBus.score.addScore(score);
     }
    
     update() {

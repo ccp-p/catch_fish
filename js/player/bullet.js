@@ -40,8 +40,7 @@ export default class Bullet {
                 this.addCoin(fish);
                 // 让鱼进入死亡状态
                 fish.die();
-                // 增加分数
-                dataBus.score.addScore(fish.score);
+          
                 // 移除子弹
                 this.isAlive = false;
             }
