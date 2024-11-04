@@ -24,6 +24,12 @@ export default class Score {
     }
 
     render() {
+        this.ctx.save();
+        this.ctx.fillStyle = "#fff";
+        this.ctx.font = "20px Arial";
+        this.ctx.fillText(`分数: ${this.score}`, 10, 30);
+        this.ctx.restore();
+
         const scoreStr = this.score.toString();
         let offsetX = this.x;
         for (let i = 0; i < scoreStr.length; i++) {

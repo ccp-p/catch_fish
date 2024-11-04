@@ -2,6 +2,7 @@ import DataBus from "../dataBus.js";
 import Net from './net.js';
 const dataBus = new DataBus();
 import Fish from './fish.js';
+import Coin from './coin.js';
 
 export default class Bullet {
     constructor(cannonLevel, x, y, angle) {
@@ -32,7 +33,7 @@ export default class Bullet {
         // 添加碰撞检测
         const fishes = dataBus.actors.filter(actor => actor instanceof Fish && actor.isAlive);
         fishes.forEach(fish => {
-            if (this.checkCollision(fish)) {
+            if (this.detectCollision(fish)) {
                 // 生成网的效果
                 dataBus.addActor(new Net(this.x, this.y, this.level));
                 // 生成金币效果
@@ -48,18 +49,38 @@ export default class Bullet {
     }
 
     render() {
+
         this.ctx.save();
         this.ctx.translate(this.x, this.y);
         this.ctx.rotate(this.angle); // 根据角度旋转
         const dx = -this.width / 2;
         const dy = -this.height / 2;
         this.ctx.drawImage(this.image.img, dx, dy, this.width, this.height);
+        // 绘制绿色的碰撞检测边框
+        this.ctx.strokeStyle = 'green';
+        this.ctx.lineWidth = 1;
+        this.ctx.strokeRect(-this.width / 2, -this.height / 2, this.width, this.height);
         this.ctx.restore();
+
     }
+  
     detectCollision(fish) {
-        const dx = Math.abs(this.x - fish.x);
-        const dy = Math.abs(this.y - fish.y);
-        return dx < (this.width + fish.width) / 2 && dy < (this.height + fish.height) / 2;
+        const rect1 = {
+            x: this.x - this.width / 2,
+            y: this.y - this.height / 2,
+            width: this.width,
+            height: this.height
+        };
+        const rect2 = {
+            x: fish.x - fish.width / 2,
+            y: fish.y - fish.height / 2,
+            width: fish.width,
+            height: fish.height
+        };
+        return rect1.x < rect2.x + rect2.width &&
+               rect1.x + rect1.width > rect2.x &&
+               rect1.y < rect2.y + rect2.height &&
+               rect1.y + rect1.height > rect2.y;
     }
 
     checkCollision(fish) {
