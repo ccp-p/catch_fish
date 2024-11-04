@@ -27,7 +27,7 @@ class Main {
         this.subtractButton = null;
         this.nets = [];  // 添加网的管理数组
         this.loop(Date.now());
-
+        this.totalProbability = 0;
         // 鱼群管理相关属性
         this.lastFishTime = Date.now()
         this.fishGenerateInterval = 1000  // 每秒生成一条鱼
@@ -45,9 +45,27 @@ class Main {
         this.bg.render();
         this.cannon.render();
         this.bindEvent()
+        this.getFishType()
         dataBus.score = this.score;
 
     
+    }
+    getFishType(){
+        const fishTypes =  this.fishTypes = [
+            { type: '1', probability: 0.1 },
+            { type: '2', probability: 0.15 },
+            { type: '3', probability: 0.05 },
+            { type: '4', probability: 0.2 },
+            { type: '5', probability: 0.1 },
+            { type: '6', probability: 0.1 },
+            { type: '7', probability: 0.1 },
+            { type: '8', probability: 0.05 },
+            { type: '9', probability: 0.1 },
+            { type: '10', probability: 0.05 }
+        ];
+        this.totalProbability = fishTypes.reduce((sum, fish) => sum + fish.probability, 0);
+
+        return      
     }
     renderButton(){
         // center
@@ -98,7 +116,7 @@ class Main {
             this.subtractButton.isPressed = false;
         }
 
-        // 处理其他区域的点击，例如发射炮弹
+        // 处理其他区域的点击，例如发射���弹
         if (!this.addButton.isClicked(mx, my) && !this.subtractButton.isClicked(mx, my)) {
             if (this.cannon.playAni) return;
             this.cannon.playAni = true;
@@ -168,12 +186,20 @@ class Main {
             const currentFishCount = dataBus.actors.filter(actor => actor instanceof Fish).length;
             if (currentFishCount < this.maxFishCount) {
                 const random = Math.random();
+             
+                let cumulativeProbability = 0;
                 let fishType;
-                if (random < 0.4) fishType = 1;       // 40%的概率生成1号鱼
-                else if (random < 0.7) fishType = 2;  // 30%的概率生成2号鱼
-                else if (random < 0.85) fishType = 3; // 15%的概率生成3号鱼
-                else if (random < 0.95) fishType = 4; // 10%的概率生成4号鱼
-                else fishType = 5;                    // 5%的概率生成5号鱼
+
+                for (const fish of this.fishTypes) {
+                    cumulativeProbability += fish.probability;
+                    if (random <= cumulativeProbability) {
+                        fishType = fish.type;
+                        break;
+                    }
+                }
+
+
+
 
                 new Fish(fishType);
                 this.fishGenerateInterval = 1000 + currentFishCount * 100; // 动态调整生成间隔

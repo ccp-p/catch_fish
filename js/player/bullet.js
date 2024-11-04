@@ -33,11 +33,14 @@ export default class Bullet {
         // 添加碰撞检测
         const fishes = dataBus.actors.filter(actor => actor instanceof Fish && actor.isAlive);
         fishes.forEach(fish => {
-            if (this.detectCollision(fish)) {
+            const isCollision = this.detectCollision(fish);
+            console.log('isCollision',isCollision);
+            
+            if (isCollision) {
                 // 生成网的效果
                 dataBus.addActor(new Net(this.x, this.y, this.level));
                 // 生成金币效果
-                this.addCoin(fish);
+                fish.addCoin(fish);
                 // 让鱼进入死亡状态
                 fish.die();
           
@@ -46,25 +49,7 @@ export default class Bullet {
             }
         });
     }
-    addCoin(fish) {
-        // fishType 1-5 对应 1-5 号鱼
-        let coinCount = fish.type * fish.type;
-     
-        const timer = setInterval(() => {
-            if(coinCount % 10 !=0){
-                dataBus.addActor(new Coin(1,fish.x, fish.y));
-                coinCount--;
-            }else{
-                dataBus.addActor(new Coin(2,fish.x, fish.y));
-                coinCount -=10
-            }
-            if(coinCount === 0){
-                clearInterval(timer)
-            }
-            
-        },150)
-        
-    }
+   
     render() {
 
         this.ctx.save();
@@ -75,8 +60,10 @@ export default class Bullet {
         this.ctx.drawImage(this.image.img, dx, dy, this.width, this.height);
         // 绘制绿色的碰撞检测边框
         this.ctx.strokeStyle = 'green';
-        this.ctx.lineWidth = 1;
-        this.ctx.strokeRect(-this.width / 2, -this.height / 2, this.width, this.height);
+        this.ctx.lineWidth = 20;
+        // 是绘制线框矩形，不是填满
+        this.ctx.strokeRect(dx, dy, this.width, this.height);
+
         this.ctx.restore();
 
     }
@@ -90,9 +77,9 @@ export default class Bullet {
         };
         const rect2 = {
             x: fish.x - fish.width / 2,
-            y: fish.y - fish.height / 2,
+            y: fish.y - fish.fishHeight / 2,
             width: fish.width,
-            height: fish.height
+            height: fish.fishHeight
         };
         return rect1.x < rect2.x + rect2.width &&
                rect1.x + rect1.width > rect2.x &&

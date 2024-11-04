@@ -31,13 +31,12 @@ export default class Net {
     checkCollision(fish) {
         const dx = Math.abs(this.x - fish.x);
         const dy = Math.abs(this.y - fish.y);
-        return dx < (this.width + fish.width) / 2 && dy < (this.height + fish.height) / 2;
+        return dx < (this.width + fish.width) / 2 && dy < (this.height + fish.fishHeight) / 2;
     }
 
     captureFish(fish) {
         // 捕捉鱼的逻辑
         this.isAlive = false;
-        fish.die();
         // 添加捕捉动画或效果
     }
 }
