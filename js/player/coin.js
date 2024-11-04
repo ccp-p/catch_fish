@@ -5,16 +5,16 @@ export default class Coin {
     constructor(x, y) {
         this.x = x;
         this.y = y;
-        this.destX = 50; // 左下角的 x 坐标
-        this.destY = dataBus.canvas.height - 50; // 左下角的 y 坐标
+        this.destX = 200; // 左下角的 x 坐标
+        this.destY = dataBus.canvas.height - 60; // 左下角的 y 坐标
         this.image = dataBus.resources['coinAni1.png'];
         this.width = this.image.img.naturalWidth;
         this.height = this.image.img.naturalHeight;
         this.ctx = dataBus.ctx;
         this.frameIndex = 0; // 帧索引
         this.isAlive = true;
-        this.zIndex = 2;
-        this.speed = 5;
+        this.zIndex = 1;
+        this.speed = 20;
     }
    
     update() {
@@ -30,6 +30,7 @@ export default class Coin {
         }
         // 更新帧索引
         this.frameIndex = (this.frameIndex + 1) % 10;
+        
     }
 
     render() {

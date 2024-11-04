@@ -9,6 +9,7 @@ export default class Background {
         
         this.width = dataBus.resources['bottom-bar.png'].img.naturalWidth;
         this.height = dataBus.resources['bottom-bar.png'].img.naturalHeight;
+        this.zIndex = 2;
         // center
 //         步骤分析：
 // 1. dataBus.canvas.width 表示画布的总宽度
